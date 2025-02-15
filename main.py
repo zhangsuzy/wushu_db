@@ -10,7 +10,11 @@ CORS(app, resources={r"/*": {"origins": "*"}})  # 允许所有前端访问
 
 
 # ✅ 打印 DATABASE_URL，确保环境变量正确
-DATABASE_URL = "postgresql://postgres.eyedijnfvivvinvymjkv:Qweasdzxc123!@aws-0-ca-central-1.pooler.supabase.com:6543/postgres"os.environ["DATABASE_URL"] = DATABASE_URL
+
+
+DATABASE_URL = "postgresql://postgres.eyedijnfvivvinvymjkv:Qweasdzxc123!@aws-0-ca-central-1.pooler.supabase.com:6543/postgres"
+
+os.environ["DATABASE_URL"] = DATABASE_URL
 print(f"📌 DATABASE_URL: {DATABASE_URL}")
 
 
