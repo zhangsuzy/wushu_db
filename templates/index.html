@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>针法查询系统</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <h1>针法查询系统</h1>
+
+    <label for="meridian">选择经络：</label>
+    <select id="meridian">
+        <option value="">请选择</option>
+        <option value="肺">肺</option>
+        <option value="大肠">大肠</option>
+        <option value="胃">胃</option>
+        <option value="脾">脾</option>
+        <option value="心">心</option>
+        <option value="小肠">小肠</option>
+        <option value="膀胱">膀胱</option>
+        <option value="肾">肾</option>
+        <option value="心包">心包</option>
+        <option value="三焦">三焦</option>
+        <option value="胆">胆</option>
+        <option value="肝">肝</option>
+    </select>
+
+    <label for="condition">选择症状：</label>
+    <select id="condition">
+        <option value="">请选择</option>
+        <option value="虚证">虚证</option>
+        <option value="实证">实证</option>
+    </select>
+
+    <label for="method">选择针法：</label>
+    <select id="method">
+        <option value="">请选择</option>
+        <option value="二针法">二针法</option>
+        <option value="四针法">四针法</option>
+    </select>
+
+    <button onclick="fetchAcupoints()">查询</button>
+
+    <h2>查询结果：</h2>
+    <div id="results"></div>
+
+    <script>
+        function fetchAcupoints() {
+            let meridian = document.getElementById("meridian").value;
+            let condition = document.getElementById("condition").value;
+            let method = document.getElementById("method").value;
+
+            if (!meridian || !condition || !method) {
+                alert("请完整选择所有选项！");
+                return;
+            }
+
+            fetch(`http://localhost:9999/get_acupoints?meridian=${meridian}&condition=${condition}&method=${method}`)
+                .then(response => response.json())
+                .then(data => {
+                    let resultsDiv = document.getElementById("results");
+                    resultsDiv.innerHTML = "";
+
+                    if (data.status === "success" && data.results.length > 0) {
+                        data.results.forEach(item => {
+                            let entry = document.createElement("p");
+                            entry.innerHTML = `<strong>${item.technique}</strong>: ${item.acupoints}`;
+                            resultsDiv.appendChild(entry);
+                        });
+                    } else {
+                        resultsDiv.innerHTML = "<p>未找到匹配的穴位信息。</p>";
+                    }
+                })
+                .catch(error => {
+                    console.error("Error fetching data:", error);
+                    document.getElementById("results").innerHTML = "<p>查询失败，请检查服务器是否正常运行。</p>";
+                });
+        }
+    </script>
+</body>
+</html>

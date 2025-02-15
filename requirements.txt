@@ -1,0 +1,11 @@
+
+
+
+
+
+flask
+werkzeug
+requests
+gunicorn
+psycopg2-binary
+flask-cors
